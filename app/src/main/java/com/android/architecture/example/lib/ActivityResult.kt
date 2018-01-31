@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Intent
 
 
-data class ActivityResult(private val requestCode: Int, private val resultCode: Int, val intent: Intent?) {
+data class ActivityResult(
+        private val requestCode: Int,
+        private val resultCode: Int,
+        val intent: Intent?
+) {
 
     companion object {
         @JvmStatic

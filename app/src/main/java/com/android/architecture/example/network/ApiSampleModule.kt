@@ -46,13 +46,14 @@ class ApiSampleModule {
     fun provideApiSampleRetrofit(@ApiSampleOkHttpClient okHttpClient: OkHttpClient, gson: Gson): Retrofit =
             createRetrofit(ApiEndpoint.SAMPLE.url(), okHttpClient, gson)
 
-    private fun createRetrofit(baseUrl: String, okHttpClient: OkHttpClient, gson: Gson): Retrofit =
-            Retrofit.Builder()
-                    .client(okHttpClient)
-                    .baseUrl(baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build()
+    private fun createRetrofit(baseUrl: String, okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+        return Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+    }
 
     @Provides
     @Singleton

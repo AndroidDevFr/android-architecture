@@ -25,7 +25,10 @@ import javax.inject.Singleton
 
 
 @Module(includes = [NetworkModule::class, PreferenceModule::class])
-class SampleApplicationModule(private val context: Context, private val application: Application) {
+class SampleApplicationModule(
+        private val context: Context,
+        private val application: Application
+) {
 
     @Provides
     @Singleton

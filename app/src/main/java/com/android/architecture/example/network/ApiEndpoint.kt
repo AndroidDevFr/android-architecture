@@ -1,7 +1,10 @@
 package com.android.architecture.example.network
 
 
-enum class ApiEndpoint(private val apiName: String, private val url: String) {
+enum class ApiEndpoint(
+        private val apiName: String,
+        private val url: String
+) {
 
     SAMPLE("jsonplaceholder", "https://jsonplaceholder.typicode.com/");
 

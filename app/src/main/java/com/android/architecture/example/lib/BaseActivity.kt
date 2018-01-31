@@ -15,7 +15,9 @@ import timber.log.Timber
 
 typealias ViewModelConstructor = (Environment, AndroidLifecycleScopeProvider) -> ActivityViewModel
 
-open class BaseActivity<out ViewModelType : ActivityViewModel>(private val viewModelSupplier: ViewModelConstructor) : AppCompatActivity() {
+open class BaseActivity<out ViewModelType : ActivityViewModel>(
+        private val viewModelSupplier: ViewModelConstructor
+) : AppCompatActivity() {
 
     protected val scopeProvider: AndroidLifecycleScopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
 
