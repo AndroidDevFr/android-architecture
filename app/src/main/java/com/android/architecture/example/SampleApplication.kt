@@ -1,9 +1,9 @@
 package com.android.architecture.example
 
-import android.app.Application
+import android.support.multidex.MultiDexApplication
 import timber.log.Timber
 
-open class SampleApplication: Application() {
+open class SampleApplication: MultiDexApplication() {
 
     private val component: SampleApplicationComponent by lazy {
         DaggerSampleApplicationComponent.builder()
