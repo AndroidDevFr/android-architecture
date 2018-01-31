@@ -1,6 +1,7 @@
 package com.android.architecture.example.lib.rx.operators
 
 import com.android.architecture.example.SampleRobolectricTestCase
+import com.android.architecture.example.network.exceptions.ApiException
 import com.google.gson.Gson
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subscribers.TestSubscriber
@@ -22,7 +23,8 @@ class ApiErrorOperatorTest : SampleRobolectricTestCase() {
         val resultTest = TestSubscriber<Int>()
         result.subscribe(resultTest::onNext)
 
-        response.onNext(Response.error<Int>(400, ResponseBody.create(null, "")))
+        response.onNext(Response.error<Int>(400, ResponseBody.create(MediaType.parse("application/json"),
+                        "{\"status\": \"KO\",\"error\": \"bad request\"}")))
 
         resultTest.assertNoValues()
     }
