@@ -15,15 +15,17 @@ import timber.log.Timber
 
 typealias ViewModelConstructor = (Environment, AndroidLifecycleScopeProvider) -> ActivityViewModel
 
-open class BaseActivity<out ViewModelType : ActivityViewModel>(
-        private val viewModelSupplier: ViewModelConstructor
-) : AppCompatActivity() {
+open class BaseActivity<ViewModelType : ActivityViewModel>: AppCompatActivity() {
 
     protected val scopeProvider: AndroidLifecycleScopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
 
-    protected val viewModel: ViewModelType by lazy { viewModelSupplier(environment(), scopeProvider) as ViewModelType }
+    protected lateinit var viewModel: ViewModelType
 
     private val back = PublishSubject.create<Boolean>()
+
+    protected fun attachViewModel(viewModelSupplier: ViewModelConstructor) {
+        viewModel = viewModelSupplier(environment(), scopeProvider) as ViewModelType
+    }
 
     @CallSuper
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
