@@ -16,4 +16,5 @@ This project hosts each sample app in separate repository branches. For more inf
 ## Contributors
 
 [Guillaume Mas](https://github.com/NodensN) - Lead Developer (Rx MVVM Dagger sample)
+
 [Florent Champigny](https://github.com/Florent37) - Lead Developer (MVP-Light sample)
