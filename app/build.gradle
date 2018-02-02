@@ -1,7 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
@@ -32,6 +29,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -46,7 +47,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.6.0'
 
     implementation 'com.google.dagger:dagger:2.13'
-    kapt 'com.google.dagger:dagger-compiler:2.13'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
 
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
@@ -57,10 +58,8 @@ dependencies {
 
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'com.uber.autodispose:autodispose-kotlin:0.5.1'
-    implementation 'com.uber.autodispose:autodispose-android-kotlin:0.5.1'
-    implementation 'com.uber.autodispose:autodispose-android-archcomponents-kotlin:0.5.1'
-    implementation 'com.uber.autodispose:autodispose-android-archcomponents-test-kotlin:0.5.1'
+
+    implementation 'com.github.florent37:rxlifecycle:2.0.4'
 
     testImplementation "org.mockito:mockito-core:2.7.22"
     testImplementation "org.robolectric:robolectric:3.5.1"
@@ -83,5 +82,12 @@ dependencies {
         exclude module: "recyclerview-v7"
     }
 
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
 }

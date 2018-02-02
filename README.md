@@ -1,1 +1,1 @@
-# Kotlin Reactive MVVM Architecture
+# Java MVP-Light Architecture
