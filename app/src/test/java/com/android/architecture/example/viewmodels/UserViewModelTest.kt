@@ -24,7 +24,7 @@ class UserViewModelTest : SampleRobolectricTestCase() {
         val users = TestSubscriber<List<User>>()
         vm.outputs.users().subscribe(users::onNext)
 
-        vm.inputs.initViews()
+        vm.inputs.fetchNext()
         users.assertValueCount(1)
     }
 

@@ -11,14 +11,15 @@ import com.android.architecture.example.network.apiresponses.ErrorEnvelope
 import com.android.architecture.example.viewmodels.UserViewModel
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposable
+import kotlinx.android.synthetic.main.activity_user.*
 import timber.log.Timber
 
 class UserActivity : BaseActivity<UserViewModel>(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        attachViewModel(fun(env: Environment, scp: AndroidLifecycleScopeProvider): UserViewModel = UserViewModel(env, scp))
-        super.onCreate(savedInstanceState)
+        attachViewModel(fun(env: Environment, scp: AndroidLifecycleScopeProvider): UserViewModel = UserViewModel(env, scp), savedInstanceState)
 
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
 
         viewModel.outputs.users()
@@ -31,7 +32,7 @@ class UserActivity : BaseActivity<UserViewModel>(){
                 .autoDisposable(scopeProvider)
                 .subscribe(this::showError)
 
-        viewModel.inputs.initViews()
+        viewModel.inputs.fetchNext()
     }
 
     override fun exitTransition(): Pair<Int, Int>? = exit()
@@ -44,6 +45,8 @@ class UserActivity : BaseActivity<UserViewModel>(){
         users.forEach {
             Timber.d("User: ${it.name}")
         }
+
+        usersNamesTextView.text = users.toString()
     }
 
 }

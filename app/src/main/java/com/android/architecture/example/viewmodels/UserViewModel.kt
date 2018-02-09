@@ -36,7 +36,7 @@ class UserViewModel(
 
     // INPUTS
 
-    override fun initViews() {
+    override fun fetchNext() {
         initViews.onNext(true)
     }
 

@@ -7,15 +7,18 @@ import android.support.annotation.CallSuper
 import android.support.v7.app.AppCompatActivity
 import com.android.architecture.example.SampleApplication
 import com.android.architecture.example.SampleApplicationComponent
+import com.android.architecture.example.lib.utils.BundleUtils
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
-typealias ViewModelConstructor = (Environment, AndroidLifecycleScopeProvider) -> ActivityViewModel
+typealias ActivityViewModelConstructor = (Environment, AndroidLifecycleScopeProvider) -> ActivityViewModel
 
-open class BaseActivity<ViewModelType : ActivityViewModel>: AppCompatActivity() {
+private const val VIEW_MODEL_KEY = "viewModel"
+
+open class BaseActivity<ViewModelType : ActivityViewModel> : AppCompatActivity() {
 
     protected val scopeProvider: AndroidLifecycleScopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
 
@@ -23,8 +26,8 @@ open class BaseActivity<ViewModelType : ActivityViewModel>: AppCompatActivity() 
 
     private val back = PublishSubject.create<Boolean>()
 
-    protected fun attachViewModel(viewModelSupplier: ViewModelConstructor) {
-        viewModel = viewModelSupplier(environment(), scopeProvider) as ViewModelType
+    protected fun attachViewModel(viewModelSupplier: ActivityViewModelConstructor, savedInstanceState: Bundle?) {
+        viewModel = ActivityViewModelManager.fetch(this, scopeProvider, viewModelSupplier, BundleUtils.maybeGetBundle(savedInstanceState, VIEW_MODEL_KEY))
     }
 
     @CallSuper
@@ -37,7 +40,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel>: AppCompatActivity() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.v("onCreate %s", this.toString())
-        viewModel.onCreate(this, savedInstanceState)
+        viewModel.intent(intent)
     }
 
     @CallSuper
@@ -65,22 +68,37 @@ open class BaseActivity<ViewModelType : ActivityViewModel>: AppCompatActivity() 
 
     @CallSuper
     override fun onPause() {
+        super.onPause()
         Timber.v("onPause %s", this.toString())
         viewModel.onPause()
-        super.onPause()
     }
 
     @CallSuper
     override fun onStop() {
-        Timber.v("onStop %s", this.toString())
         super.onStop()
+        Timber.v("onStop %s", this.toString())
     }
 
     @CallSuper
     override fun onDestroy() {
-        Timber.v("onDestroy %s", this.toString())
-        viewModel.onDestroy()
         super.onDestroy()
+        Timber.v("onDestroy %s", this.toString())
+
+        if (isFinishing) {
+            ActivityViewModelManager.destroy(viewModel)
+        }
+    }
+
+    @CallSuper
+    override fun onSaveInstanceState(outState: Bundle) {
+        Timber.v("onSaveInstanceState %s", this.toString())
+
+        var viewModelEnvelope = Bundle()
+        viewModelEnvelope = ActivityViewModelManager.save(viewModel, viewModelEnvelope)
+
+        outState.putBundle(VIEW_MODEL_KEY, viewModelEnvelope)
+
+        super.onSaveInstanceState(outState)
     }
 
     protected open fun exitTransition(): Pair<Int, Int>? {

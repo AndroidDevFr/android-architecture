@@ -44,12 +44,8 @@ open class ActivityViewModel {
         Timber.v("onDestroy: %s", this.toString())
     }
 
-    protected fun activityResult(): Observable<ActivityResult> {
-        return activityResult
-    }
+    protected fun activityResult(): Observable<ActivityResult> = activityResult
 
-    protected fun intent(): Observable<Intent> {
-        return intent
-    }
+    protected fun intent(): Observable<Intent> = intent
 
 }
