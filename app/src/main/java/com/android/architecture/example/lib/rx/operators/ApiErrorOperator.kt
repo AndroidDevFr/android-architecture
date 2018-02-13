@@ -31,7 +31,9 @@ import retrofit2.Response
 import java.io.IOException
 
 
-class ApiErrorOperator<T>(private val gson: Gson) : ObservableOperator<T, Response<T>> {
+class ApiErrorOperator<T>(
+        private val gson: Gson
+) : ObservableOperator<T, Response<T>> {
 
     override fun apply(observer: Observer<in T>): Observer<in Response<T>> {
         return object : Observer<Response<T>> {

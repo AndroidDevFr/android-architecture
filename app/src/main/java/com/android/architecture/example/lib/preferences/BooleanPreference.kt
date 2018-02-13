@@ -22,7 +22,11 @@ package com.android.architecture.example.lib.preferences
 
 import android.content.SharedPreferences
 
-class BooleanPreference(private val sharedPreferences: SharedPreferences, private val key: String, private val defaultValue: Boolean) : BooleanPreferenceType {
+class BooleanPreference(
+        private val sharedPreferences: SharedPreferences,
+        private val key: String,
+        private val defaultValue: Boolean
+) : BooleanPreferenceType {
 
     constructor(sharedPreferences: SharedPreferences, key: String) : this(sharedPreferences, key, false)
 

@@ -22,7 +22,11 @@ package com.android.architecture.example.lib.preferences
 
 import android.content.SharedPreferences
 
-class IntPreference(private val sharedPreferences: SharedPreferences, private val key: String, private val defaultValue: Int) : IntPreferenceType {
+class IntPreference(
+        private val sharedPreferences: SharedPreferences,
+        private val key: String,
+        private val defaultValue: Int
+) : IntPreferenceType {
 
     constructor(sharedPreferences: SharedPreferences, key: String) : this(sharedPreferences, key, 0)
 

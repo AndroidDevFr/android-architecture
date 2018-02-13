@@ -23,7 +23,11 @@ package com.android.architecture.example.lib.preferences
 import android.content.SharedPreferences
 
 
-class StringPreference(private val sharedPreferences: SharedPreferences, private val key: String, private val defaultValue: String?) : StringPreferenceType {
+class StringPreference(
+        private val sharedPreferences: SharedPreferences,
+        private val key: String,
+        private val defaultValue: String?
+) : StringPreferenceType {
 
     constructor(sharedPreferences: SharedPreferences, key: String) : this(sharedPreferences, key, null)
 
