@@ -3,7 +3,7 @@
 [![Kotlin](https://img.shields.io/badge/kotlin-1.2.21-519EF8.svg)](https://kotlinlang.org/)
 [![Min SDK](https://img.shields.io/badge/min%20SDK-16-lightgrey.svg)](http://developer.android.com/about/dashboards/index.html#Platform)
 
-On this sample I try to show you how to make a smooth android architecture on **Reactive Functionnal Programming** :rocket:
+On this sample I try to show you how to make a smooth android architecture on **Reactive Functionnal Programming**
 
 ## Introduction
 
