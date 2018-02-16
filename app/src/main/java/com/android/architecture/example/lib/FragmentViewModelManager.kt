@@ -14,7 +14,7 @@ object FragmentViewModelManager {
 
     private val viewModels = HashMap<String, FragmentViewModel>()
 
-    fun <ViewModelType : FragmentViewModel> fetch(context: Context,
+    fun <ViewModelType : FragmentViewModel> fetch(context: Context?,
                                                   scopeProvider: AndroidLifecycleScopeProvider,
                                                   fragmentViewModelConstructor: FragmentViewModelConstructor,
                                                   savedInstanceState: Bundle?): ViewModelType {
@@ -50,13 +50,13 @@ object FragmentViewModelManager {
         }
     }
 
-    private fun <ViewModelType : FragmentViewModel> create(context: Context,
+    private fun <ViewModelType : FragmentViewModel> create(context: Context?,
                                                            scopeProvider: AndroidLifecycleScopeProvider,
                                                            fragmentViewModelConstructor: FragmentViewModelConstructor,
                                                            savedInstanceState: Bundle?,
                                                            viewModelId: String): ViewModelType {
 
-        val application = context.applicationContext as SampleApplication
+        val application = context?.applicationContext as SampleApplication
         val environment = application.component().environment()
 
         val viewModel = fragmentViewModelConstructor(environment, scopeProvider)

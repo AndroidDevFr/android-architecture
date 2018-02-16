@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import com.android.architecture.example.lib.utils.BundleUtils
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import timber.log.Timber
@@ -19,8 +18,8 @@ class BaseFragment<ViewModelType : FragmentViewModel> : Fragment() {
 
     protected lateinit var viewModel: ViewModelType
 
-    protected fun attachViewModel(activity: AppCompatActivity, viewModelSupplier: FragmentViewModelConstructor, savedInstanceState: Bundle?) {
-        viewModel = FragmentViewModelManager.fetch(activity, scopeProvider, viewModelSupplier, BundleUtils.maybeGetBundle(savedInstanceState, VIEW_MODEL_KEY))
+    protected fun attachViewModel(viewModelSupplier: FragmentViewModelConstructor, savedInstanceState: Bundle?) {
+        viewModel = FragmentViewModelManager.fetch(context, scopeProvider, viewModelSupplier, BundleUtils.maybeGetBundle(savedInstanceState, VIEW_MODEL_KEY))
     }
 
     @CallSuper

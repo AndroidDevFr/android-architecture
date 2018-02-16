@@ -14,10 +14,12 @@ import com.uber.autodispose.kotlin.autoDisposable
 import kotlinx.android.synthetic.main.activity_user.*
 import timber.log.Timber
 
-class UserActivity : BaseActivity<UserViewModel>(){
+class UserActivity : BaseActivity<UserViewModel>() {
+
+    private val viewModelConstructor = fun(env: Environment, scp: AndroidLifecycleScopeProvider): UserViewModel = UserViewModel(env, scp)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        attachViewModel(fun(env: Environment, scp: AndroidLifecycleScopeProvider): UserViewModel = UserViewModel(env, scp), savedInstanceState)
+        attachViewModel(viewModelConstructor, savedInstanceState)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
