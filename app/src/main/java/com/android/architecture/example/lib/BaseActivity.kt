@@ -101,8 +101,17 @@ open class BaseActivity<ViewModelType : ActivityViewModel> : AppCompatActivity()
         super.onSaveInstanceState(outState)
     }
 
+    @CallSuper
+    override fun onBackPressed() {
+        back()
+    }
+
     protected open fun exitTransition(): Pair<Int, Int>? {
         return null
+    }
+
+    protected fun back() {
+        back.onNext(true)
     }
 
     protected fun application(): SampleApplication = application as SampleApplication
