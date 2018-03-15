@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.android.architecture.example.SampleApplication
 import com.android.architecture.example.lib.utils.BundleUtils
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
+import timber.log.Timber
 import java.util.*
 
 private const val VIEW_MODEL_ID_KEY = "fragment_view_model_id"
@@ -29,8 +30,12 @@ object FragmentViewModelManager {
         return fragmentViewModel as ViewModelType
     }
 
-    fun save(fragmentViewModel: FragmentViewModel, envelope: Bundle) : Bundle {
-        envelope.putString(VIEW_MODEL_ID_KEY, findIdForViewModel(fragmentViewModel))
+    fun save(fragmentViewModel: FragmentViewModel, envelope: Bundle): Bundle {
+        try {
+            envelope.putString(VIEW_MODEL_ID_KEY, findIdForViewModel(fragmentViewModel))
+        } catch (exception: RuntimeException) {
+            Timber.w("save %s: %s", this.toString(), exception.message)
+        }
 
         val state = Bundle()
         envelope.putBundle(VIEW_MODEL_STATE_KEY, state)
@@ -39,7 +44,7 @@ object FragmentViewModelManager {
     }
 
     fun destroy(fragmentViewModel: FragmentViewModel) {
-        fragmentViewModel.onDestroyView()
+        fragmentViewModel.onDestroy()
 
         val iterator = viewModels.entries.iterator()
         while (iterator.hasNext()) {
@@ -63,13 +68,16 @@ object FragmentViewModelManager {
 
         viewModels[viewModelId] = viewModel
 
-        viewModel.onCreate(context, BundleUtils.maybeGetBundle(savedInstanceState, VIEW_MODEL_STATE_KEY))
+        viewModel.onCreateView(context, BundleUtils.maybeGetBundle(savedInstanceState, VIEW_MODEL_STATE_KEY))
 
         return viewModel as ViewModelType
     }
 
     private fun fetchId(savedInstanceState: Bundle?): String {
-        return if (savedInstanceState != null) savedInstanceState.getString(VIEW_MODEL_ID_KEY) else UUID.randomUUID().toString()
+        return if (savedInstanceState != null && savedInstanceState.containsKey(VIEW_MODEL_ID_KEY))
+            savedInstanceState.getString(VIEW_MODEL_ID_KEY)
+        else
+            UUID.randomUUID().toString()
     }
 
     private fun findIdForViewModel(fragmentViewModel: FragmentViewModel): String {

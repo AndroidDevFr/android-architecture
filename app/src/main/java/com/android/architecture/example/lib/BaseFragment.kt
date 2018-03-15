@@ -1,9 +1,13 @@
 package com.android.architecture.example.lib
 
+import android.arch.lifecycle.Lifecycle
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.android.architecture.example.lib.utils.BundleUtils
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import timber.log.Timber
@@ -12,9 +16,9 @@ typealias FragmentViewModelConstructor = (Environment, AndroidLifecycleScopeProv
 
 private const val VIEW_MODEL_KEY = "viewModel"
 
-class BaseFragment<ViewModelType : FragmentViewModel> : Fragment() {
+open class BaseFragment<ViewModelType : FragmentViewModel> : Fragment() {
 
-    protected val scopeProvider: AndroidLifecycleScopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
+    protected val scopeProvider: AndroidLifecycleScopeProvider by lazy { AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY) }
 
     protected lateinit var viewModel: ViewModelType
 
@@ -25,14 +29,16 @@ class BaseFragment<ViewModelType : FragmentViewModel> : Fragment() {
     @CallSuper
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
+        Timber.v("onActivityResult %s", this.toString())
         viewModel.activityResult(ActivityResult.create(requestCode, resultCode, intent))
     }
 
     @CallSuper
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Timber.v("onCreate %s", this.toString())
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        Timber.v("onCreateView %s", this.toString())
         viewModel.arguments(arguments)
+        return view
     }
 
     @CallSuper
@@ -57,7 +63,20 @@ class BaseFragment<ViewModelType : FragmentViewModel> : Fragment() {
     }
 
     @CallSuper
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.v("onDestroy %s", this.toString())
+    }
+
+    @CallSuper
+    override fun onDetach() {
+        super.onDetach()
+        Timber.v("onDetach %s", this.toString())
+    }
+
+    @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {
+        Timber.v("onSaveInstanceState %s", this.toString())
 
         var viewModelEnvelope = Bundle()
         viewModelEnvelope = FragmentViewModelManager.save(viewModel, viewModelEnvelope)

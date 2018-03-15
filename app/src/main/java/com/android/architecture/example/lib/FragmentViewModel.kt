@@ -24,23 +24,23 @@ open class FragmentViewModel {
     }
 
     @CallSuper
-    fun onCreate(context: Context, savedInstanceState: Bundle?) {
-        Timber.v("onCreate: %s", this.toString())
+    open fun onCreateView(context: Context, savedInstanceState: Bundle?) {
+        Timber.v("onCreateView %s", this.toString())
     }
 
     @CallSuper
-    fun <ViewType> onResume(view: ViewType) {
-        Timber.v("onResume: %s", this.toString())
+    open fun <ViewType> onResume(view: ViewType) {
+        Timber.v("onResume %s", this.toString())
     }
 
     @CallSuper
-    fun onPause() {
-        Timber.v("onPause: %s", this.toString())
+    open fun onPause() {
+        Timber.v("onPause %s", this.toString())
     }
 
     @CallSuper
-    fun onDestroyView() {
-        Timber.v("onDestroyView: %s", this.toString())
+    open fun onDestroy() {
+        Timber.v("onDestroy %s", this.toString())
     }
 
     protected fun arguments(): Observable<Bundle> {
