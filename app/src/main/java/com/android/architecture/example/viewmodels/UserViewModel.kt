@@ -2,6 +2,7 @@ package com.android.architecture.example.viewmodels
 
 import com.android.architecture.example.lib.ActivityViewModel
 import com.android.architecture.example.lib.Environment
+import com.android.architecture.example.lib.rx.Irrelevant
 import com.android.architecture.example.lib.rx.transformers.Transformers.neverError
 import com.android.architecture.example.lib.rx.transformers.Transformers.pipeApiErrorsTo
 import com.android.architecture.example.models.User
@@ -17,7 +18,7 @@ class UserViewModel(
         scopeProvider: AndroidLifecycleScopeProvider
 ) : ActivityViewModel(), UserViewModelInputs, UserViewModelOutputs, UserViewModelErrors {
 
-    private val initViews = PublishSubject.create<Boolean>()
+    private val initViews = PublishSubject.create<Irrelevant>()
     private val fetchUsersError = PublishSubject.create<ErrorEnvelope>()
     private val users = PublishSubject.create<List<User>>()
 
@@ -37,7 +38,7 @@ class UserViewModel(
     // INPUTS
 
     override fun fetchNext() {
-        initViews.onNext(true)
+        initViews.onNext(Irrelevant.INSTANCE)
     }
 
     // OUTPUTS

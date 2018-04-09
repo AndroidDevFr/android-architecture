@@ -1,5 +1,6 @@
 package com.android.architecture.example.lib
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Lifecycle
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.support.annotation.CallSuper
 import android.support.v7.app.AppCompatActivity
 import com.android.architecture.example.SampleApplication
 import com.android.architecture.example.SampleApplicationComponent
+import com.android.architecture.example.lib.rx.Irrelevant
 import com.android.architecture.example.lib.utils.BundleUtils
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposable
@@ -18,13 +20,14 @@ typealias ActivityViewModelConstructor = (Environment, AndroidLifecycleScopeProv
 
 private const val VIEW_MODEL_KEY = "viewModel"
 
+@SuppressLint("Registered")
 open class BaseActivity<ViewModelType : ActivityViewModel> : AppCompatActivity() {
 
     protected val scopeProvider: AndroidLifecycleScopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
 
     protected lateinit var viewModel: ViewModelType
 
-    private val back = PublishSubject.create<Boolean>()
+    private val back = PublishSubject.create<Irrelevant>()
 
     protected fun attachViewModel(viewModelSupplier: ActivityViewModelConstructor, savedInstanceState: Bundle?) {
         viewModel = ActivityViewModelManager.fetch(this, scopeProvider, viewModelSupplier, BundleUtils.maybeGetBundle(savedInstanceState, VIEW_MODEL_KEY))
@@ -111,7 +114,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel> : AppCompatActivity()
     }
 
     protected fun back() {
-        back.onNext(true)
+        back.onNext(Irrelevant.INSTANCE)
     }
 
     protected fun application(): SampleApplication = application as SampleApplication
