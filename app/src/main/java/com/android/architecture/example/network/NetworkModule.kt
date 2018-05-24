@@ -1,8 +1,7 @@
 package com.android.architecture.example.network
 
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,10 +20,10 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGson(): Gson {
-        return GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                .create()
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+                .add(KotlinJsonAdapterFactory())
+                .build()
     }
 
 }

@@ -15,7 +15,7 @@ import com.android.architecture.example.lib.qualifiers.AccessTokenPreference
 import com.android.architecture.example.lib.qualifiers.ApplicationContext
 import com.android.architecture.example.network.ApiSampleType
 import com.android.architecture.example.network.NetworkModule
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
@@ -58,8 +58,8 @@ class SampleApplicationModule(
 
     @Provides
     @Singleton
-    fun provideEnvironment(gson: Gson, currentUser: CurrentUserType, apiSample: ApiSampleType, scheduler: Scheduler): Environment {
-        return Environment(gson, currentUser, apiSample, scheduler)
+    fun provideEnvironment(moshi: Moshi, currentUser: CurrentUserType, apiSample: ApiSampleType, scheduler: Scheduler): Environment {
+        return Environment(moshi, currentUser, apiSample, scheduler)
     }
 
     @Provides

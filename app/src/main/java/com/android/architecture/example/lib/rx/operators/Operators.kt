@@ -20,11 +20,11 @@
  */
 package com.android.architecture.example.lib.rx.operators
 
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 
 
 object Operators {
 
-    fun <T> apiError(gson: Gson): ApiErrorOperator<T> = ApiErrorOperator(gson)
+    fun <T> apiError(moshi: Moshi): ApiErrorOperator<T> = ApiErrorOperator(moshi)
 
 }

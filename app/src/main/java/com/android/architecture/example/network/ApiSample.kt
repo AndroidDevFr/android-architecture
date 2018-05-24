@@ -4,14 +4,14 @@ import com.android.architecture.example.lib.rx.operators.ApiErrorOperator
 import com.android.architecture.example.lib.rx.operators.Operators
 import com.android.architecture.example.models.User
 import com.android.architecture.example.network.adapters.UserEnvelopeAdapter
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
 
 class ApiSample(
         private val apiSampleService: ApiSampleService,
-        private val gson: Gson
+        private val moshi: Moshi
 ) : ApiSampleType() {
 
     override fun fetchUsers(): Observable<List<User>> {
@@ -22,7 +22,7 @@ class ApiSample(
     }
 
     private fun <T> apiErrorOperator(): ApiErrorOperator<T> {
-        return Operators.apiError(gson)
+        return Operators.apiError(moshi)
     }
 
 }

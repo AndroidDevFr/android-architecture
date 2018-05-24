@@ -11,6 +11,7 @@ import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.kotlin.autoDisposable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 
 
 class UserViewModel(
@@ -33,6 +34,10 @@ class UserViewModel(
                 .switchMap { this.fetchUsers() }
                 .autoDisposable(scopeProvider)
                 .subscribe(users::onNext)
+
+        fetchUsersError
+                .autoDisposable(scopeProvider)
+                .subscribe { Timber.e("Fetch users error: %s", it.error) }
     }
 
     // INPUTS

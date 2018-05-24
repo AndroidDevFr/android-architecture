@@ -6,14 +6,14 @@ import com.android.architecture.example.lib.CurrentUserType
 import com.android.architecture.example.lib.qualifiers.ApiSampleOkHttpClient
 import com.android.architecture.example.lib.qualifiers.ApiSampleRetrofit
 import com.android.architecture.example.network.interceptors.ApiSampleRequestInterceptor
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.*
 import javax.inject.Singleton
 
@@ -43,14 +43,14 @@ class ApiSampleModule {
     @Provides
     @Singleton
     @ApiSampleRetrofit
-    fun provideApiSampleRetrofit(@ApiSampleOkHttpClient okHttpClient: OkHttpClient, gson: Gson): Retrofit =
-            createRetrofit(ApiEndpoint.SAMPLE.url(), okHttpClient, gson)
+    fun provideApiSampleRetrofit(@ApiSampleOkHttpClient okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
+            createRetrofit(ApiEndpoint.SAMPLE.url(), okHttpClient, moshi)
 
-    private fun createRetrofit(baseUrl: String, okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+    private fun createRetrofit(baseUrl: String, okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
     }
@@ -62,6 +62,6 @@ class ApiSampleModule {
 
     @Provides
     @Singleton
-    fun provideApiSampleType(apiSampleService: ApiSampleService, gson: Gson): ApiSampleType = ApiSample(apiSampleService, gson)
+    fun provideApiSampleType(apiSampleService: ApiSampleService, moshi: Moshi): ApiSampleType = ApiSample(apiSampleService, moshi)
 
 }

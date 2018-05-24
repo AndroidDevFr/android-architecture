@@ -23,7 +23,8 @@ package com.android.architecture.example.lib.rx.operators
 import com.android.architecture.example.network.apiresponses.ErrorEnvelope
 import com.android.architecture.example.network.exceptions.ApiException
 import com.android.architecture.example.network.exceptions.ResponseException
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import io.reactivex.ObservableOperator
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -32,7 +33,7 @@ import java.io.IOException
 
 
 class ApiErrorOperator<T>(
-        private val gson: Gson
+        private val moshi: Moshi
 ) : ObservableOperator<T, Response<T>> {
 
     override fun apply(observer: Observer<in T>): Observer<in Response<T>> {
@@ -49,8 +50,12 @@ class ApiErrorOperator<T>(
             override fun onNext(response: Response<T>) {
                 if (!response.isSuccessful) {
                     try {
-                        val envelope = gson.fromJson(response.errorBody()?.string(), ErrorEnvelope::class.java)
-                        observer.onError(ApiException(envelope, response))
+                        val type = Types.newParameterizedType(ErrorEnvelope::class.java)
+                        response.errorBody()?.let { }
+                        val envelope = moshi.adapter<ErrorEnvelope>(type).fromJson(response.errorBody()?.string()
+                                ?: "{}")
+                        envelope?.let { observer.onError(ApiException(it, response)) }
+                                ?: observer.onError(ResponseException(response))
                     } catch (e: IOException) {
                         observer.onError(ResponseException(response))
                     }
