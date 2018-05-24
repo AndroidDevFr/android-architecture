@@ -1,6 +1,6 @@
 # Reactive MVVM Architecture for Android™
 
-[![Kotlin](https://img.shields.io/badge/kotlin-1.2.31-519EF8.svg)](https://kotlinlang.org/)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.2.41-519EF8.svg)](https://kotlinlang.org/)
 [![Min SDK](https://img.shields.io/badge/min%20SDK-16-lightgrey.svg)](http://developer.android.com/about/dashboards/index.html#Platform)
 
 On this sample I try to show you how to make a smooth android architecture on **Reactive Functionnal Programming**
